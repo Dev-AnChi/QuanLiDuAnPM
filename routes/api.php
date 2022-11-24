@@ -19,6 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('/get/{id}',[packageController::class, 'get'])->name('getData');
+Route::get('/get/{userid}/{id}',[packageController::class, 'get'])->name('getData');
 

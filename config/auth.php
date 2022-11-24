@@ -40,9 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'loyal_customer' => [
-            'driver' => 'session',
-            'provider' => 'loyal_customers',
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
         ],
         // 'loyal_customer-api' => [
         //     'driver' => 'token',

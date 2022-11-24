@@ -2,8 +2,6 @@
 
 
 @section('main')
-
-
     Home viet qq gi day
 @endsection
 

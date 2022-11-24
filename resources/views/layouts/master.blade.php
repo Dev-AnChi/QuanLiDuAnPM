@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Game Web</title>
     @stack('styles')
+    @stack('script')
 </head>
 <body>
     <h1 style="margin-bottom: 30px">Day la header</h1>
@@ -17,6 +18,6 @@
 
     <h1 style="margin-top: 30px">Day la footer</h1>
 
-    @stack('script')
+
 </body>
 </html>
