@@ -12,7 +12,6 @@ class miss extends Model
     protected $fillable = [
         'tennv',
         'chitietnv',
-        'trangthai',
         'soluotdcnhan',
     ];
 

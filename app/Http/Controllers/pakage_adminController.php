@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\voucher;
 use Illuminate\Http\Request;
+use App\Models\package;
 
-class voucherController extends Controller
+class pakage_adminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class voucherController extends Controller
     public function index()
     {
         //
-        $vouchers = voucher::all();
-        return view('admin.voucher.index', ['vouchers' => $vouchers]);
+        $packages = package::all();
+        return view('admin.package.index', ['packages' => $packages]);
     }
 
     /**
@@ -27,7 +27,7 @@ class voucherController extends Controller
     public function create()
     {
         //
-        return view('admin.voucher.create');
+        return view('admin.package.create');
     }
 
     /**
@@ -38,16 +38,16 @@ class voucherController extends Controller
      */
     public function store(Request $request)
     {
-        $urlImage = 'image'.time().'-'.$request->tenvoucher.'.'.$request->anh->extension();
+        //
+        $urlImage = 'image'.time().'-'.$request->ten.'.'.$request->anh->extension();
         $request->anh->move(public_path('images'), $urlImage);
 
-        $voucher = voucher::create([
-                'tenvoucher' => $request->input('tenvoucher'),
+        $package = package::create([
+                'ten' => $request->input('ten'),
                 'anh' => $urlImage,
-                'giatri' => $request->input('giatri')
         ]);
-        $voucher->save();
-        return redirect('voucher');
+        $package->save();
+        return redirect('package');
     }
 
     /**
@@ -58,7 +58,7 @@ class voucherController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -70,8 +70,8 @@ class voucherController extends Controller
     public function edit($id)
     {
         //
-        $voucher = voucher::find($id);
-        return view('admin.voucher.edit', ['voucher' => $voucher]);
+        $package = package::find($id);
+        return view('admin.package.edit', ['package' => $package]);
     }
 
     /**
@@ -83,24 +83,23 @@ class voucherController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //
         if($request->file('anh') != null){
-            $urlImage = 'image'.time().'-'.$request->tenvoucher.'.'.$request->anh->extension();
+            $urlImage = 'image'.time().'-'.$request->ten.'.'.$request->anh->extension();
             $request->anh->move(public_path('images'), $urlImage);
 
-            voucher::where('id', $id)->update([
-                'tenvoucher' => $request->input('tenvoucher'),
+            package::where('id', $id)->update([
+                'ten' => $request->input('ten'),
                 'anh' => $urlImage,
-                'giatri' => $request->input('giatri')
             ]);
         }
         else{
-            voucher::where('id', $id)->update([
-                'tenvoucher' => $request->input('tenvoucher'),
-                'giatri' => $request->input('giatri')
+            package::where('id', $id)->update([
+                'ten' => $request->input('ten'),
             ]);
         }
         
-        return redirect('voucher');
+        return redirect('package');
     }
 
     /**
@@ -112,8 +111,8 @@ class voucherController extends Controller
     public function destroy($id)
     {
         //
-        $voucher = voucher::find($id);
-        $voucher->delete();    
-        return redirect('voucher');
+        $package = package::find($id);
+        $package->delete();    
+        return redirect('package');
     }
 }

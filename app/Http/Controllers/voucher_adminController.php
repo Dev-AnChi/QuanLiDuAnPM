@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\voucher;
 use Illuminate\Http\Request;
+use App\Models\voucher;
 
-class voucherController extends Controller
+class voucher_adminController extends Controller
 {
     /**
      * Display a listing of the resource.
