@@ -19,6 +19,11 @@ class user_adminController extends Controller
         return view('admin.user.index', ['users' => $users]);
     }
 
+    public function history()
+    {
+       return view('admin.user.history');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

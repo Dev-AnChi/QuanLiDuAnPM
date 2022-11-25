@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-.container {
+.mycontainer {
     position: relative;
     width: 350px;
     height: 350px;
@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
 }
-.container .spinBtn {
+.mycontainer .spinBtn {
     position: relative;
     width: 60px;
     height: 60px;
@@ -29,7 +29,7 @@
     cursor: pointer;
     user-select: none;
 }
-.container .spinBtn::before {
+.mycontainer .spinBtn::before {
     content: "";
     position: absolute;
     top: -20px;
@@ -38,7 +38,7 @@
     background-color: #fff;
     clip-path: polygon(50% 0%, 15% 100%, 85% 100%);
 }
-.container .spinBtn::after {
+.mycontainer .spinBtn::after {
     content: "Start";
     position: absolute;
     top: 20px;
@@ -46,7 +46,7 @@
     font-size: 13px;
     background-color: transparent;
 }
-.container .wheel {
+.mycontainer .wheel {
     position: absolute;
     top: 0;
     left: 0;
@@ -59,7 +59,7 @@
     transition: transform 7s ease-in-out;
 
 }
-.container .wheel .number {
+.mycontainer .wheel .number {
     position: absolute;
     width: 50%;
     height: 50%;
@@ -73,13 +73,13 @@
     user-select: none;
     cursor: pointer;
 }
-.container .wheel .number:nth-child(odd) {
+.mycontainer .wheel .number:nth-child(odd) {
     background-color: #2c3639;
 }
-.container .wheel .number:nth-child(even) {
+.mycontainer .wheel .number:nth-child(even) {
     background-color: #a27b5c;
 }
-.container .wheel .number span {
+.mycontainer .wheel .number span {
     position: relative;
     transform: rotate(45deg);
     font-size: 2em;
@@ -87,7 +87,7 @@
     color: #fff;
     text-shadow: 3px 5px 2px rgba(0, 0, 0, 0.15);
 }
-.container .wheel .number span::after {
+.mycontainer .wheel .number span::after {
     content: "%";
     position: absolute;
     font-size: 0.75em;

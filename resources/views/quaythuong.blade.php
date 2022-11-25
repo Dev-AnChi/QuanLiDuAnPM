@@ -14,7 +14,7 @@
 
 @section('main')
    <div class="wrap">
-       <div class="container">
+       <div class="mycontainer">
            <div class="spinBtn"></div>
            <div class="wheel">
                @php

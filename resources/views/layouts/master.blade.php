@@ -10,14 +10,40 @@
     @stack('script')
 </head>
 <body>
-    <h1 style="margin-bottom: 30px">Day la header</h1>
+@include('layouts.header');
 
-    <div class="main">
-        @yield('main')
-    </div>
+<div class="main">
+    @yield('main')
+</div>
 
-    <h1 style="margin-top: 30px">Day la footer</h1>
+@include('layouts.footer');
 
+
+<script type="text/javascript"> (function () {
+        _360_widget_id = `_${Math.random().toString(36).slice(2)}`;
+        var _360_options = {
+            _360_facebook: "100009046880567",
+            _360_order: "facebook",
+            _360_greeting: "no",
+            _360_btn_size: "normal",
+            _360_display_btn: "everywhere",
+            _360_chat_bubble: "1",
+            _360_randomID: _360_widget_id
+        };
+        var _360_proto = document.location.protocol, _360_host = "js.widget.get.chat",
+            _360_url = _360_proto + "//" + _360_host;
+        var _360_s = document.createElement('script');
+        _360_s.type = 'text/javascript';
+        _360_s.async = true;
+        _360_s.src = _360_url + '/360.js';
+        _360_s.onload = function () {
+            _360Widget.init(_360_host, _360_proto, _360_options);
+        };
+        var _360_x = document.getElementsByTagName('script')[0];
+        _360_x.parentNode.insertBefore(_360_s, _360_x);
+    })(); </script>
 
 </body>
+
+
 </html>
