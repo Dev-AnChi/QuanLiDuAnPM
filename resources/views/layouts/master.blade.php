@@ -7,42 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Game Web</title>
     @stack('styles')
-    @stack('script')
+
 </head>
 <body>
-@include('layouts.header');
+@include('layouts.header')
 
-<div class="main">
+<div class="main mt-4">
     @yield('main')
 </div>
 
-@include('layouts.footer');
+@include('layouts.footer')
 
-
-<script type="text/javascript"> (function () {
-        _360_widget_id = `_${Math.random().toString(36).slice(2)}`;
-        var _360_options = {
-            _360_facebook: "100009046880567",
-            _360_order: "facebook",
-            _360_greeting: "no",
-            _360_btn_size: "normal",
-            _360_display_btn: "everywhere",
-            _360_chat_bubble: "1",
-            _360_randomID: _360_widget_id
-        };
-        var _360_proto = document.location.protocol, _360_host = "js.widget.get.chat",
-            _360_url = _360_proto + "//" + _360_host;
-        var _360_s = document.createElement('script');
-        _360_s.type = 'text/javascript';
-        _360_s.async = true;
-        _360_s.src = _360_url + '/360.js';
-        _360_s.onload = function () {
-            _360Widget.init(_360_host, _360_proto, _360_options);
-        };
-        var _360_x = document.getElementsByTagName('script')[0];
-        _360_x.parentNode.insertBefore(_360_s, _360_x);
-    })(); </script>
-
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/63864587daff0e1306da142d/1gj27v7js';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
+@stack('script')
 </body>
 
 

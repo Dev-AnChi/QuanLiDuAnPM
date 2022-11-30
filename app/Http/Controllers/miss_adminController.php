@@ -10,11 +10,11 @@ class miss_adminController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+
         $misss = miss::all();
         return view('admin.miss.index', ['misss' => $misss]);
     }
@@ -22,7 +22,7 @@ class miss_adminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -34,7 +34,8 @@ class miss_adminController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -44,8 +45,9 @@ class miss_adminController extends Controller
             'chitietnv' => $request->input('chitietnv'),
             'soluotdcnhan' => $request->input('soluotdcnhan')
         ]);
+
         $miss->save();
-        return redirect('miss');
+        return redirect()->route('miss.index');
     }
 
     /**
@@ -77,7 +79,8 @@ class miss_adminController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -87,20 +90,21 @@ class miss_adminController extends Controller
             'chitietnv' => $request->input('chitietnv'),
             'soluotdcnhan' => $request->input('soluotdcnhan')
         ]);
-        return redirect('miss');
+        return redirect()->route('miss.index');;
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
         //
         $miss = miss::find($id);
         $miss->delete();    
-        return redirect('miss');
+        return redirect()->route('miss.index');
     }
 }

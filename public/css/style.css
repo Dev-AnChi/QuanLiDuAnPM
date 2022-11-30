@@ -41,8 +41,8 @@
 .mycontainer .spinBtn::after {
     content: "Start";
     position: absolute;
-    top: 20px;
-    left: 1px;
+    top: 18px;
+    left: 5px;
     font-size: 13px;
     background-color: transparent;
 }

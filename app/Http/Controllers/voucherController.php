@@ -15,6 +15,7 @@ class voucherController extends Controller
     public function index()
     {
         //
+
         $vouchers = voucher::all();
         return view('admin.voucher.index', ['vouchers' => $vouchers]);
     }

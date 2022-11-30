@@ -39,7 +39,8 @@ class user_adminController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -52,7 +53,7 @@ class user_adminController extends Controller
                 'soluotquay' => $request->input('soluotquay')
         ]);
         $user->save();
-        return redirect('user');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -75,7 +76,7 @@ class user_adminController extends Controller
      */
     public function edit($id)
     {
-        //
+
         $user = User::find($id);
         return view('admin.user.edit', ['user' => $user]);
     }
@@ -96,7 +97,7 @@ class user_adminController extends Controller
             'password' => $request->input('password'),
             'soluotquay' => $request->input('soluotquay')
         ]);
-        return redirect('user');
+        return redirect()->route('user.index');
     }
 
     /**
@@ -110,6 +111,6 @@ class user_adminController extends Controller
         //
         $user = User::find($id);
         $user->delete();    
-        return redirect('user');
+        return redirect()->route('user.index');
     }
 }

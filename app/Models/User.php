@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+ use Carbon\Carbon;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,8 +47,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public  function vouchers()
     {
-       return $this->belongsToMany(voucher::class);
+       return $this->belongsToMany(voucher::class)
+           ->withPivot('created_at')
+           ->orderByPivot('created_at', 'desc');
     }
+   public  function vouchers2()
+   {
+      return $this->belongsToMany(voucher::class)
+          ->withPivot('created_at')
+          ->whereDate('user_voucher.created_at',Carbon::today());
+   }
 
    public  function miss()
    {

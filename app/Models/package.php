@@ -14,7 +14,7 @@ class package extends Model
    ];
 
 
-   public  function  vouchers()
+   public  function  vouchers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
    {
       return $this->belongsToMany(voucher::class)->withPivot('tile');
    }

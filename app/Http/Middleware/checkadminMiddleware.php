@@ -21,7 +21,6 @@ class checkadminMiddleware
       if (Gate::allows('isAdmin'))
       {
          return $next($request);
-
       }
 
        return redirect('/');

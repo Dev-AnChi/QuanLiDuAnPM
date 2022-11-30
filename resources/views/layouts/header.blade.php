@@ -23,12 +23,17 @@
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('quaythuong')}}">Quay Thưởng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Nhiệm Vụ</a>
+                    <a class="nav-link text-dark" href="{{route('quaythuong')}}">Quay Thưởng</a>
                 </li>
 
+                @auth
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{{route('nhiemvu')}}">Nhiệm Vụ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{{route('lichsu')}}">Lịch Sử</a>
+                    </li>
+                @endauth
             </ul>
             <!-- Left links -->
         </div>
@@ -40,15 +45,14 @@
             @auth
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <div class="nav-link">{{ Auth::user()->name }}</div>
+                        <div class="nav-link text-dark">{{ Auth::user()->name }}</div>
                     </li>
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                             onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                                             onclick="event.preventDefault()
+                                                this.closest('form').submit()">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -56,7 +60,7 @@
 
                 </ul>
             @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                <a href="{{ route('login') }}" class="text-sm  text-gray-700 dark:text-gray-500 underline">Log in</a>
             @endauth
 
 

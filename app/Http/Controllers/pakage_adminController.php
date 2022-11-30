@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\voucher;
 use Illuminate\Http\Request;
 use App\Models\package;
 
@@ -14,8 +15,8 @@ class pakage_adminController extends Controller
      */
     public function index()
     {
-        //
-        $packages = package::all();
+
+        $packages = package::get();
         return view('admin.package.index', ['packages' => $packages]);
     }
 
@@ -26,19 +27,23 @@ class pakage_adminController extends Controller
      */
     public function create()
     {
-        //
-        return view('admin.package.create');
+        $vouchers = voucher::query()->get();
+        return view('admin.package.create',compact('vouchers'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        $vouchers = $request->input('multiselect');
+
+
+
         $urlImage = 'image'.time().'-'.$request->ten.'.'.$request->anh->extension();
         $request->anh->move(public_path('images'), $urlImage);
 
@@ -47,7 +52,16 @@ class pakage_adminController extends Controller
                 'anh' => $urlImage,
         ]);
         $package->save();
-        return redirect('package');
+
+       if(!is_null($vouchers))
+       {
+          $package->vouchers()->attach(
+              $vouchers
+          );
+       }
+
+
+        return redirect()->route('package.index');
     }
 
     /**
@@ -65,13 +79,34 @@ class pakage_adminController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+
         $package = package::find($id);
-        return view('admin.package.edit', ['package' => $package]);
+
+        $all_voucher = voucher::query()->get();
+
+         $arr_checked = array ();
+         foreach ($all_voucher as $v)
+         {
+            foreach ($package->vouchers as $p)
+            {
+               if ($v->id === $p->id)
+               {
+                  $arr_checked[] = $p->id;
+               }
+            }
+         }
+
+        $all_voucher_except = $all_voucher->except($arr_checked);
+
+        return view('admin.package.edit', [
+            'package'=> $package,
+            'all_voucher_except' => $all_voucher_except,
+        ]);
     }
 
     /**
@@ -79,11 +114,14 @@ class pakage_adminController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+       $vouchers = $request->input('multiselect');
+       $packs = $request->input('pack');
+
         if($request->file('anh') != null){
             $urlImage = 'image'.time().'-'.$request->ten.'.'.$request->anh->extension();
             $request->anh->move(public_path('images'), $urlImage);
@@ -98,21 +136,36 @@ class pakage_adminController extends Controller
                 'ten' => $request->input('ten'),
             ]);
         }
-        
-        return redirect('package');
+       $package = package::query()->find($id);
+      if (!is_null($packs))
+      {
+         $packs = array_filter($packs, static fn($pack) => $pack['tile'] ?? false);
+         $package->vouchers()->sync(
+             $packs
+         );
+      }
+
+          $package->vouchers()->attach(
+              $vouchers
+          );
+
+
+        return redirect()->route('package.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+
         $package = package::find($id);
+        $package->vouchers()->detach();
         $package->delete();    
-        return redirect('package');
+        return redirect()->route('package.index');
     }
 }

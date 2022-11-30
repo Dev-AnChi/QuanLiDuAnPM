@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
+use App\Models\package;
 use Illuminate\Http\Request;
 use App\Models\voucher;
 
 class voucher_adminController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -22,22 +27,29 @@ class voucher_adminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
-        return view('admin.voucher.create');
+        $packages = package::get();
+        return view('admin.voucher.create',compact('packages'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     *
      */
+
+
     public function store(Request $request)
     {
+       $packs = $request->input('pack');
+       $packs = array_filter($packs, static fn($pack) => $pack['tile'] ?? false);
+
+
         $urlImage = 'image'.time().'-'.$request->tenvoucher.'.'.$request->anh->extension();
         $request->anh->move(public_path('images'), $urlImage);
 
@@ -47,7 +59,14 @@ class voucher_adminController extends Controller
                 'giatri' => $request->input('giatri')
         ]);
         $voucher->save();
-        return redirect('voucher');
+
+
+          $voucher->packages()->attach(
+              $packs
+          );
+
+
+        return redirect()->route('voucher.index');
     }
 
     /**
@@ -65,13 +84,37 @@ class voucher_adminController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+
         $voucher = voucher::find($id);
-        return view('admin.voucher.edit', ['voucher' => $voucher]);
+
+       $all_pac = package::query()->get();
+
+       $arr_checked = array ();
+
+       foreach ($all_pac as $v)
+       {
+          foreach ($voucher->packages as $p)
+          {
+             if ($v->id === $p->id)
+             {
+                $arr_checked[] = $p->id;
+             }
+          }
+       }
+       $all_pac_except = $all_pac->except($arr_checked);
+
+
+       return view('admin.voucher.edit', [
+           'voucher' => $voucher,
+           'all_pac_except' => $all_pac_except,
+           ]
+
+       );
     }
 
     /**
@@ -79,10 +122,13 @@ class voucher_adminController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
+
+
         if($request->file('anh') != null){
             $urlImage = 'image'.time().'-'.$request->tenvoucher.'.'.$request->anh->extension();
             $request->anh->move(public_path('images'), $urlImage);
@@ -99,21 +145,33 @@ class voucher_adminController extends Controller
                 'giatri' => $request->input('giatri')
             ]);
         }
-        
-        return redirect('voucher');
+
+
+       $packs = $request->input('pack');
+       $packs = array_filter($packs, static fn($pack) => $pack['tile'] ?? false);
+
+       $voucher = voucher::query()->find($id);
+       $voucher->packages()->sync(
+           $packs
+       );
+
+
+       return redirect()->route('voucher.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
         //
         $voucher = voucher::find($id);
+        $voucher->packages()->detach();
         $voucher->delete();    
-        return redirect('voucher');
+        return redirect()->route('voucher.index');
     }
 }

@@ -33,13 +33,9 @@ Route::get('/', static fn () => view('home'))->name('trangchu');
 Route::middleware(['auth', 'verified'])->group(function () {
    Route::get('/quaythuong', [packageController::class, 'index'])->name('quaythuong');
    Route::get('/quaythuong/{id}', [packageController::class, 'show'])->name('vaoquay');
+   Route::get('/lichsu',[UserController::class,'gethistory'])->name('lichsu');
+   Route::get('/nhiemvu',[UserController::class,'getmiss'])->name('nhiemvu');
 });
-
-
-Route::get('/dashboard', function () {
-   return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 
 
 //verify email
@@ -61,47 +57,27 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
-Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin/voucher')->group(function (){
-      Route::get('/', [voucher_adminController::class, 'index']);
-      Route::get('/create', [voucher_adminController::class, 'create']);
-      Route::post('/store', [voucher_adminController::class, 'store']);
-      Route::get('/show/{id}', [voucher_adminController::class, 'show']);
-      Route::get('/edit/{id}', [voucher_adminController::class, 'edit']);
-      Route::put('/update/{id}', [voucher_adminController::class, 'update']);
-      Route::delete('/destroy/{id}', [voucher_adminController::class, 'destroy']);
+Route::middleware(['auth', 'verified','checkadmin'])->name('admin.')->prefix('admin')->group(function ()
+{
+   Route::get('/',[UserController::class,'dashboard'])->name('dashboard');
+   Route::get('/report',[UserController::class,'report'])->name('report');
 });
 
-Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin/user')->group(function (){
-   Route::get('/', [user_adminController::class, 'index']);
-   Route::get('/history', [user_adminController::class, 'history']);
-   Route::get('/create', [user_adminController::class, 'create']);
-   Route::post('/store', [user_adminController::class, 'store']);
-   Route::get('/show/{id}', [user_adminController::class, 'show']);
-   Route::get('/edit/{id}', [user_adminController::class, 'edit']);
-   Route::put('/update/{id}', [user_adminController::class, 'update']);
-   Route::delete('/destroy/{id}', [user_adminController::class, 'destroy']);
+
+
+Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin')->group(function (){
+
+   Route::resource('voucher', voucher_adminController::class);
+   Route::resource('user',user_adminController::class);
+   Route::resource('package',pakage_adminController::class);
+   Route::resource('miss',miss_adminController::class);
 
 });
 
-Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin/package')->group(function (){
-   Route::get('/', [pakage_adminController::class, 'index']);
-   Route::get('/create', [pakage_adminController::class, 'create']);
-   Route::post('/store', [pakage_adminController::class, 'store']);
-   Route::get('/show/{id}', [pakage_adminController::class, 'show']);
-   Route::get('/edit/{id}', [pakage_adminController::class, 'edit']);
-   Route::put('/update/{id}', [pakage_adminController::class, 'update']);
-   Route::delete('/destroy/{id}', [pakage_adminController::class, 'destroy']);
-});
 
-Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin/miss')->group(function (){
-   Route::get('/', [miss_adminController::class, 'index']);
-   Route::get('/create', [miss_adminController::class, 'create']);
-   Route::post('/store', [miss_adminController::class, 'store']);
-   Route::get('/show/{id}', [miss_adminController::class, 'show']);
-   Route::get('/edit/{id}', [miss_adminController::class, 'edit']);
-   Route::put('/update/{id}', [miss_adminController::class, 'update']);
-   Route::delete('/destroy/{id}', [miss_adminController::class, 'destroy']);
-});
+// Route::middleware(['auth', 'verified','checkadmin'])->prefix('admin')->group(function (){
+//
+// });
 
 
 

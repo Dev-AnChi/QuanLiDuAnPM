@@ -34,9 +34,9 @@ class packageController extends Controller
       {
          return response()->json(
              [
-                 'code' => 201,
+                 'code' => 200,
                  'data' => 'hết lượt quay',
-             ],201);
+             ],200);
       }
 
 
@@ -47,21 +47,29 @@ class packageController extends Controller
       $pac = package::query()->find($id);
 
       $data= array ();
+      $i = 0;
+
+
       foreach ($pac->vouchers as $p) {
          $data[$p->id] = $p->pivot->tile;
       }
 
       $biasRandom = new BiasRandom();
       $biasRandom->setData($data);
-      $temp = $biasRandom->random();
+      $id_quay_duoc = $biasRandom->random();
+      $voucher = voucher::query()->findOrFail($id_quay_duoc[0]);
 
-      $voucher = voucher::query()->findOrFail($temp)->first();
+      $index = array_search($id_quay_duoc[0],array_keys($data));
+
+      $user->vouchers()->attach(
+              $id_quay_duoc[0]
+      );
 
       return response()->json(
       [
           'code' => 200,
           'data' => [
-              'id' =>   $temp,
+              'id' =>   $index,
               'name' => $voucher->tenvoucher,
           ],
       ]);
@@ -69,7 +77,7 @@ class packageController extends Controller
 
    public function show($id)
    {
-      $pac = package::query()->findOrFail($id)->vouchers;
+      $pac = package::query()->findOrFail($id);
 
       return view('quaythuong',compact('pac'));
    }

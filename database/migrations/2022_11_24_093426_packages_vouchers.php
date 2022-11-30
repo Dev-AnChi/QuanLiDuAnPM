@@ -17,7 +17,7 @@ return new class extends Migration
           $table->id();
           $table->integer('package_id');
           $table->integer('voucher_id');
-          $table->float('tile');
+          $table->float('tile')->default(0);
           $table->timestamps();
        });
     }
